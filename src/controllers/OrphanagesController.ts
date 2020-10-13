@@ -4,6 +4,14 @@ import { getRepository } from 'typeorm';
 import Orphanage from '../models/Orphanage';
 
 export default {
+  async index(req: Request, res: Response) {
+    const orphanagesRepository = getRepository(Orphanage);
+    const orphanages = await orphanagesRepository.find();
+
+    return res.status(201).json(orphanages);
+  },
+
+
   async create(req: Request, res: Response) {
     const {
       name,
@@ -15,8 +23,8 @@ export default {
       open_on_weekends,
     } = req.body;
 
-    const orphanageRepository = getRepository(Orphanage);
-    const orphanage = orphanageRepository.create({
+    const orphanagesRepository = getRepository(Orphanage);
+    const orphanage = orphanagesRepository.create({
       name,
       latitude,
       longitude,
@@ -26,7 +34,7 @@ export default {
       open_on_weekends,
     })
 
-    await orphanageRepository.save(orphanage);
+    await orphanagesRepository.save(orphanage);
 
     return res.status(201).json(orphanage);
   }
